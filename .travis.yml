@@ -18,6 +18,7 @@ before_install:
   - git clone https://github.com/urho3d/android-ndk.git $HOME/android-ndk-root
   - export ANDROID_NDK_HOME=$HOME/android-ndk-root
 script:
+
   # check that all Support section of the README are the same.
   #- for f in */README.md; do sed -n '/Support/,/License/p' $f > /tmp/$(dirname $f).readme; done && diff -u --from-file=/tmp/hello-jni.readme /tmp/*.readme
   # check that all compileSdkVersion are 23.
