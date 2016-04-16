@@ -11,12 +11,16 @@ android:
 addons:
   apt_packages:
     - pandoc
-  artifacts:
+  artifacts: 
+    true
     paths:
       - $(git ls-files -o | grep app/build/outputs | tr "\n" ":")
 before_install:
   - git clone https://github.com/urho3d/android-ndk.git $HOME/android-ndk-root
   - export ANDROID_NDK_HOME=$HOME/android-ndk-root
+   - ARTIFACTS_KEY=(AWS access key id)
+   - ARTIFACTS_SECRET=(AWS secret access key)
+   - ARTIFACTS_BUCKET=(S3 bucket name)
 script:
   # check that all Support section of the README are the same.
   #- for f in */README.md; do sed -n '/Support/,/License/p' $f > /tmp/$(dirname $f).readme; done && diff -u --from-file=/tmp/hello-jni.readme /tmp/*.readme
