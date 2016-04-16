@@ -18,7 +18,6 @@ before_install:
   - git clone https://github.com/urho3d/android-ndk.git $HOME/android-ndk-root
   - export ANDROID_NDK_HOME=$HOME/android-ndk-root
 script:
-
   # check that all Support section of the README are the same.
   #- for f in */README.md; do sed -n '/Support/,/License/p' $f > /tmp/$(dirname $f).readme; done && diff -u --from-file=/tmp/hello-jni.readme /tmp/*.readme
   # check that all compileSdkVersion are 23.
@@ -36,6 +35,6 @@ script:
   #- (cd hello-thirdparty && ./gradlew download_and_stage_gpg_sdk)
   #- (cd builder && ./gradlew test)
   # print build failure summary
-  - pandoc builder/build/reports/tests/index.html -t plain | sed -n '/^Failed tests/,/default-package/p'
+  #- pandoc builder/build/reports/tests/index.html -t plain | sed -n '/^Failed tests/,/default-package/p'
   # print lint results details
    - for f in */app/build/outputs/lint-results.html; do pandoc $f -t plain; done
