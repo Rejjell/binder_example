@@ -1,6 +1,6 @@
 # C++11 support is enabled
-
-libs := ../libs
+LOCAL_PATH := $(call my-dir)
+libs := $(LOCAL_PATH)/../libs
 
 LOCAL_PATH := $(call my-dir)
 include $(CLEAR_VARS)
