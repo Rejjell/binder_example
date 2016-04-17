@@ -1,52 +1,46 @@
-/* sendfile -- copy data directly from one file descriptor to another
-   Copyright (C) 1998,99,01,2002,2004 Free Software Foundation, Inc.
-   This file is part of the GNU C Library.
+/*
+ * Copyright (C) 2008 The Android Open Source Project
+ * All rights reserved.
+ *
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions
+ * are met:
+ *  * Redistributions of source code must retain the above copyright
+ *    notice, this list of conditions and the following disclaimer.
+ *  * Redistributions in binary form must reproduce the above copyright
+ *    notice, this list of conditions and the following disclaimer in
+ *    the documentation and/or other materials provided with the
+ *    distribution.
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+ * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+ * LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS
+ * FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE
+ * COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT,
+ * INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING,
+ * BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS
+ * OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED
+ * AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
+ * OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT
+ * OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
+ * SUCH DAMAGE.
+ */
 
-   The GNU C Library is free software; you can redistribute it and/or
-   modify it under the terms of the GNU Lesser General Public
-   License as published by the Free Software Foundation; either
-   version 2.1 of the License, or (at your option) any later version.
+#ifndef _SYS_SENDFILE_H_
+#define _SYS_SENDFILE_H_
 
-   The GNU C Library is distributed in the hope that it will be useful,
-   but WITHOUT ANY WARRANTY; without even the implied warranty of
-   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
-   Lesser General Public License for more details.
-
-   You should have received a copy of the GNU Lesser General Public
-   License along with the GNU C Library; if not, write to the Free
-   Software Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
-   02111-1307 USA.  */
-
-#ifndef _SYS_SENDFILE_H
-#define _SYS_SENDFILE_H	1
-
-#include <features.h>
+#include <sys/cdefs.h>
 #include <sys/types.h>
 
 __BEGIN_DECLS
 
-/* Send up to COUNT bytes from file associated with IN_FD starting at
-   *OFFSET to descriptor OUT_FD.  Set *OFFSET to the IN_FD's file position
-   following the read bytes.  If OFFSET is a null pointer, use the normal
-   file position instead.  Return the number of written bytes, or -1 in
-   case of error.  */
-#ifndef __USE_FILE_OFFSET64
-extern ssize_t sendfile (int __out_fd, int __in_fd, off_t *__offset,
-			 size_t __count) __THROW;
+#if defined(__USE_FILE_OFFSET64)
+extern ssize_t sendfile(int out_fd, int in_fd, off_t* offset, size_t count) __RENAME(sendfile64);
 #else
-# ifdef __REDIRECT_NTH
-extern ssize_t __REDIRECT_NTH (sendfile,
-			       (int __out_fd, int __in_fd, __off64_t *__offset,
-				size_t __count), sendfile64);
-# else
-#  define sendfile sendfile64
-# endif
+extern ssize_t sendfile(int out_fd, int in_fd, off_t* offset, size_t count);
 #endif
-#ifdef __USE_LARGEFILE64
-extern ssize_t sendfile64 (int __out_fd, int __in_fd, __off64_t *__offset,
-			   size_t __count) __THROW;
-#endif
+extern ssize_t sendfile64(int out_fd, int in_fd, off64_t* offset, size_t count);
 
 __END_DECLS
 
-#endif	/* sys/sendfile.h */
+#endif /* _SYS_SENDFILE_H_ */

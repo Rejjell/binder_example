@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2008 The Android Open Source Project
+ * Copyright (C) 2013 The Android Open Source Project
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -25,18 +25,16 @@
  * OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
  * SUCH DAMAGE.
  */
+#ifndef _SYS_AUXV_H_
+#define _SYS_AUXV_H_
 
-#ifndef _SYS_FSUID_H_
-#define _SYS_FSUID_H_
-
+#include <linux/auxvec.h>
 #include <sys/cdefs.h>
-#include <sys/types.h>
 
 __BEGIN_DECLS
 
-extern int setfsuid(uid_t);
-extern int setfsgid(gid_t);
+unsigned long int getauxval(unsigned long int type);
 
 __END_DECLS
 
-#endif /* _SYS_FSUID_H_ */
+#endif /* _SYS_AUXV_H_ */

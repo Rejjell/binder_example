@@ -25,18 +25,9 @@
  * OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
  * SUCH DAMAGE.
  */
+#ifndef _SYS_UTIME_H_
+#define _SYS_UTIME_H_
 
-#ifndef _SYS_FSUID_H_
-#define _SYS_FSUID_H_
+#include <linux/utime.h>
 
-#include <sys/cdefs.h>
-#include <sys/types.h>
-
-__BEGIN_DECLS
-
-extern int setfsuid(uid_t);
-extern int setfsgid(gid_t);
-
-__END_DECLS
-
-#endif /* _SYS_FSUID_H_ */
+#endif /* _SYS_UTIME_H_ */

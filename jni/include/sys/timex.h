@@ -1,127 +1,43 @@
-/* Copyright (C) 1995, 1996, 1997, 1999 Free Software Foundation, Inc.
-   This file is part of the GNU C Library.
+/*
+ * Copyright (C) 2014 The Android Open Source Project
+ * All rights reserved.
+ *
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions
+ * are met:
+ *  * Redistributions of source code must retain the above copyright
+ *    notice, this list of conditions and the following disclaimer.
+ *  * Redistributions in binary form must reproduce the above copyright
+ *    notice, this list of conditions and the following disclaimer in
+ *    the documentation and/or other materials provided with the
+ *    distribution.
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+ * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+ * LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS
+ * FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE
+ * COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT,
+ * INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING,
+ * BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS
+ * OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED
+ * AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
+ * OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT
+ * OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
+ * SUCH DAMAGE.
+ */
 
-   The GNU C Library is free software; you can redistribute it and/or
-   modify it under the terms of the GNU Lesser General Public
-   License as published by the Free Software Foundation; either
-   version 2.1 of the License, or (at your option) any later version.
+#ifndef _SYS_TIMEX_H_
+#define _SYS_TIMEX_H_
 
-   The GNU C Library is distributed in the hope that it will be useful,
-   but WITHOUT ANY WARRANTY; without even the implied warranty of
-   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
-   Lesser General Public License for more details.
-
-   You should have received a copy of the GNU Lesser General Public
-   License along with the GNU C Library; if not, write to the Free
-   Software Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
-   02111-1307 USA.  */
-
-#ifndef	_SYS_TIMEX_H
-#define	_SYS_TIMEX_H	1
-
-#include <features.h>
-#include <sys/time.h>
-
-/* These definitions from linux/timex.h as of 2.2.0.  */
-
-struct ntptimeval
-{
-  struct timeval time;	/* current time (ro) */
-  long int maxerror;	/* maximum error (us) (ro) */
-  long int esterror;	/* estimated error (us) (ro) */
-};
-
-struct timex
-{
-  unsigned int modes;	/* mode selector */
-  long int offset;	/* time offset (usec) */
-  long int freq;	/* frequency offset (scaled ppm) */
-  long int maxerror;	/* maximum error (usec) */
-  long int esterror;	/* estimated error (usec) */
-  int status;		/* clock command/status */
-  long int constant;	/* pll time constant */
-  long int precision;	/* clock precision (usec) (read only) */
-  long int tolerance;	/* clock frequency tolerance (ppm) (read only) */
-  struct timeval time;	/* (read only) */
-  long int tick;	/* (modified) usecs between clock ticks */
-
-  long int ppsfreq;	/* pps frequency (scaled ppm) (ro) */
-  long int jitter;	/* pps jitter (us) (ro) */
-  int shift;		/* interval duration (s) (shift) (ro) */
-  long int stabil;	/* pps stability (scaled ppm) (ro) */
-  long int jitcnt;	/* jitter limit exceeded (ro) */
-  long int calcnt;	/* calibration intervals (ro) */
-  long int errcnt;	/* calibration errors (ro) */
-  long int stbcnt;	/* stability limit exceeded (ro) */
-
-  /* ??? */
-  int  :32; int  :32; int  :32; int  :32;
-  int  :32; int  :32; int  :32; int  :32;
-  int  :32; int  :32; int  :32; int  :32;
-};
-
-/* Mode codes (timex.mode) */
-#define ADJ_OFFSET		0x0001	/* time offset */
-#define ADJ_FREQUENCY		0x0002	/* frequency offset */
-#define ADJ_MAXERROR		0x0004	/* maximum time error */
-#define ADJ_ESTERROR		0x0008	/* estimated time error */
-#define ADJ_STATUS		0x0010	/* clock status */
-#define ADJ_TIMECONST		0x0020	/* pll time constant */
-#define ADJ_TICK		0x4000	/* tick value */
-#define ADJ_OFFSET_SINGLESHOT	0x8001	/* old-fashioned adjtime */
-
-/* xntp 3.4 compatibility names */
-#define MOD_OFFSET	ADJ_OFFSET
-#define MOD_FREQUENCY	ADJ_FREQUENCY
-#define MOD_MAXERROR	ADJ_MAXERROR
-#define MOD_ESTERROR	ADJ_ESTERROR
-#define MOD_STATUS	ADJ_STATUS
-#define MOD_TIMECONST	ADJ_TIMECONST
-#define MOD_CLKB	ADJ_TICK
-#define MOD_CLKA	ADJ_OFFSET_SINGLESHOT /* 0x8000 in original */
-
-
-/* Status codes (timex.status) */
-#define STA_PLL		0x0001	/* enable PLL updates (rw) */
-#define STA_PPSFREQ	0x0002	/* enable PPS freq discipline (rw) */
-#define STA_PPSTIME	0x0004	/* enable PPS time discipline (rw) */
-#define STA_FLL		0x0008	/* select frequency-lock mode (rw) */
-
-#define STA_INS		0x0010	/* insert leap (rw) */
-#define STA_DEL		0x0020	/* delete leap (rw) */
-#define STA_UNSYNC	0x0040	/* clock unsynchronized (rw) */
-#define STA_FREQHOLD	0x0080	/* hold frequency (rw) */
-
-#define STA_PPSSIGNAL	0x0100	/* PPS signal present (ro) */
-#define STA_PPSJITTER	0x0200	/* PPS signal jitter exceeded (ro) */
-#define STA_PPSWANDER	0x0400	/* PPS signal wander exceeded (ro) */
-#define STA_PPSERROR	0x0800	/* PPS signal calibration error (ro) */
-
-#define STA_CLOCKERR	0x1000	/* clock hardware fault (ro) */
-
-#define STA_RONLY (STA_PPSSIGNAL | STA_PPSJITTER | STA_PPSWANDER | \
-    STA_PPSERROR | STA_CLOCKERR) /* read-only bits */
-
-/* Clock states (time_state) */
-#define TIME_OK		0	/* clock synchronized, no leap second */
-#define TIME_INS	1	/* insert leap second */
-#define TIME_DEL	2	/* delete leap second */
-#define TIME_OOP	3	/* leap second in progress */
-#define TIME_WAIT	4	/* leap second has occurred */
-#define TIME_ERROR	5	/* clock not synchronized */
-#define TIME_BAD	TIME_ERROR /* bw compat */
-
-/* Maximum time constant of the PLL.  */
-#define MAXTC		6
+#include <sys/cdefs.h>
+#include <sys/types.h>
+#include <linux/timex.h>
 
 __BEGIN_DECLS
 
-extern int __adjtimex (struct timex *__ntx) __THROW;
-extern int adjtimex (struct timex *__ntx) __THROW;
-
-extern int ntp_gettime (struct ntptimeval *__ntv) __THROW;
-extern int ntp_adjtime (struct timex *__tntx) __THROW;
+int adjtimex(struct timex*);
+int clock_adjtime(clockid_t, struct timex*);
 
 __END_DECLS
 
-#endif /* sys/timex.h */
+#endif /* _SYS_TIMEX_H_ */

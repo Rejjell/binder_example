@@ -1,103 +1,61 @@
-/* Copyright (C) 1992,94,1996-2000,2002,2004 Free Software Foundation, Inc.
-   This file is part of the GNU C Library.
+/*
+ * Copyright (C) 2008 The Android Open Source Project
+ * All rights reserved.
+ *
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions
+ * are met:
+ *  * Redistributions of source code must retain the above copyright
+ *    notice, this list of conditions and the following disclaimer.
+ *  * Redistributions in binary form must reproduce the above copyright
+ *    notice, this list of conditions and the following disclaimer in
+ *    the documentation and/or other materials provided with the
+ *    distribution.
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+ * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+ * LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS
+ * FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE
+ * COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT,
+ * INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING,
+ * BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS
+ * OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED
+ * AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
+ * OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT
+ * OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
+ * SUCH DAMAGE.
+ */
 
-   The GNU C Library is free software; you can redistribute it and/or
-   modify it under the terms of the GNU Lesser General Public
-   License as published by the Free Software Foundation; either
-   version 2.1 of the License, or (at your option) any later version.
+#ifndef _SYS_RESOURCE_H_
+#define _SYS_RESOURCE_H_
 
-   The GNU C Library is distributed in the hope that it will be useful,
-   but WITHOUT ANY WARRANTY; without even the implied warranty of
-   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
-   Lesser General Public License for more details.
+#include <sys/cdefs.h>
+#include <sys/types.h>
 
-   You should have received a copy of the GNU Lesser General Public
-   License along with the GNU C Library; if not, write to the Free
-   Software Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
-   02111-1307 USA.  */
-
-#ifndef	_SYS_RESOURCE_H
-#define	_SYS_RESOURCE_H	1
-
-#include <features.h>
-
-/* Get the system-dependent definitions of structures and bit values.  */
-#include <bits/resource.h>
-
-#ifndef __id_t_defined
-typedef __id_t id_t;
-# define __id_t_defined
-#endif
+#include <linux/resource.h>
 
 __BEGIN_DECLS
 
-/* The X/Open standard defines that all the functions below must use
-   `int' as the type for the first argument.  When we are compiling with
-   GNU extensions we change this slightly to provide better error
-   checking.  */
-#if defined __USE_GNU && !defined __cplusplus
-typedef enum __rlimit_resource __rlimit_resource_t;
-typedef enum __rusage_who __rusage_who_t;
-typedef enum __priority_which __priority_which_t;
-#else
-typedef int __rlimit_resource_t;
-typedef int __rusage_who_t;
-typedef int __priority_which_t;
-#endif
+/* The kernel header doesn't have these, but POSIX does. */
+#define RLIM_SAVED_CUR RLIM_INFINITY
+#define RLIM_SAVED_MAX RLIM_INFINITY
 
-/* Put the soft and hard limits for RESOURCE in *RLIMITS.
-   Returns 0 if successful, -1 if not (and sets errno).  */
-#ifndef __USE_FILE_OFFSET64
-extern int getrlimit (__rlimit_resource_t __resource,
-		      struct rlimit *__rlimits) __THROW;
-#else
-# ifdef __REDIRECT_NTH
-extern int __REDIRECT_NTH (getrlimit, (__rlimit_resource_t __resource,
-				       struct rlimit *__rlimits), getrlimit64);
-# else
-#  define getrlimit getrlimit64
-# endif
-#endif
-#ifdef __USE_LARGEFILE64
-extern int getrlimit64 (__rlimit_resource_t __resource,
-			struct rlimit64 *__rlimits) __THROW;
-#endif
+typedef unsigned long rlim_t;
 
-/* Set the soft and hard limits for RESOURCE to *RLIMITS.
-   Only the super-user can increase hard limits.
-   Return 0 if successful, -1 if not (and sets errno).  */
-#ifndef __USE_FILE_OFFSET64
-extern int setrlimit (__rlimit_resource_t __resource,
-		      __const struct rlimit *__rlimits) __THROW;
-#else
-# ifdef __REDIRECT_NTH
-extern int __REDIRECT_NTH (setrlimit, (__rlimit_resource_t __resource,
-				       __const struct rlimit *__rlimits),
-			   setrlimit64);
-# else
-#  define setrlimit setrlimit64
-# endif
-#endif
-#ifdef __USE_LARGEFILE64
-extern int setrlimit64 (__rlimit_resource_t __resource,
-			__const struct rlimit64 *__rlimits) __THROW;
-#endif
+extern int getrlimit(int, struct rlimit*);
+extern int setrlimit(int, const struct rlimit*);
 
-/* Return resource usage information on process indicated by WHO
-   and put it in *USAGE.  Returns 0 for success, -1 for failure.  */
-extern int getrusage (__rusage_who_t __who, struct rusage *__usage) __THROW;
+extern int getrlimit64(int, struct rlimit64*);
+extern int setrlimit64(int, const struct rlimit64*);
 
-/* Return the highest priority of any process specified by WHICH and WHO
-   (see above); if WHO is zero, the current process, process group, or user
-   (as specified by WHO) is used.  A lower priority number means higher
-   priority.  Priorities range from PRIO_MIN to PRIO_MAX (above).  */
-extern int getpriority (__priority_which_t __which, id_t __who) __THROW;
+extern int getpriority(int, int);
+extern int setpriority(int, int, int);
 
-/* Set the priority of all processes specified by WHICH and WHO (see above)
-   to PRIO.  Returns 0 on success, -1 on errors.  */
-extern int setpriority (__priority_which_t __which, id_t __who, int __prio)
-     __THROW;
+extern int getrusage(int, struct rusage*);
+
+extern int prlimit(pid_t, int, const struct rlimit*, struct rlimit*);
+extern int prlimit64(pid_t, int, const struct rlimit64*, struct rlimit64*);
 
 __END_DECLS
 
-#endif	/* sys/resource.h  */
+#endif /* _SYS_RESOURCE_H_ */

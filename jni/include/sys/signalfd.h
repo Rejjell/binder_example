@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2008 The Android Open Source Project
+ * Copyright (C) 2013 The Android Open Source Project
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -26,17 +26,17 @@
  * SUCH DAMAGE.
  */
 
-#ifndef _SYS_FSUID_H_
-#define _SYS_FSUID_H_
+#ifndef _SYS_SIGNALFD_H_
+#define _SYS_SIGNALFD_H_
 
+#include <linux/signalfd.h>
+#include <signal.h>
 #include <sys/cdefs.h>
-#include <sys/types.h>
 
 __BEGIN_DECLS
 
-extern int setfsuid(uid_t);
-extern int setfsgid(gid_t);
+extern int signalfd(int fd, const sigset_t* mask, int flags) __nonnull((2));
 
 __END_DECLS
 
-#endif /* _SYS_FSUID_H_ */
+#endif /* _SYS_SIGNALFD_H */

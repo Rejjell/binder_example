@@ -1,275 +1,158 @@
-/* Copyright (C) 1991,1992,1994,1995,1996,1997,1998,1999,2000,2001,2002,2006
-   	Free Software Foundation, Inc.
-   This file is part of the GNU C Library.
-
-   The GNU C Library is free software; you can redistribute it and/or
-   modify it under the terms of the GNU Lesser General Public
-   License as published by the Free Software Foundation; either
-   version 2.1 of the License, or (at your option) any later version.
-
-   The GNU C Library is distributed in the hope that it will be useful,
-   but WITHOUT ANY WARRANTY; without even the implied warranty of
-   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
-   Lesser General Public License for more details.
-
-   You should have received a copy of the GNU Lesser General Public
-   License along with the GNU C Library; if not, write to the Free
-   Software Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
-   02111-1307 USA.  */
-
 /*
- *	POSIX Standard: 2.6 Primitive System Data Types	<sys/types.h>
+ * Copyright (C) 2008 The Android Open Source Project
+ * All rights reserved.
+ *
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions
+ * are met:
+ *  * Redistributions of source code must retain the above copyright
+ *    notice, this list of conditions and the following disclaimer.
+ *  * Redistributions in binary form must reproduce the above copyright
+ *    notice, this list of conditions and the following disclaimer in
+ *    the documentation and/or other materials provided with the
+ *    distribution.
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+ * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+ * LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS
+ * FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE
+ * COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT,
+ * INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING,
+ * BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS
+ * OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED
+ * AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
+ * OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT
+ * OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
+ * SUCH DAMAGE.
  */
+#ifndef _SYS_TYPES_H_
+#define _SYS_TYPES_H_
 
-#ifndef	_SYS_TYPES_H
-#define	_SYS_TYPES_H	1
-
-#include <features.h>
-
-__BEGIN_DECLS
-
-#include <bits/types.h>
-
-#ifdef	__USE_BSD
-# ifndef __u_char_defined
-typedef __u_char u_char;
-typedef __u_short u_short;
-typedef __u_int u_int;
-typedef __u_long u_long;
-typedef __quad_t quad_t;
-typedef __u_quad_t u_quad_t;
-typedef __fsid_t fsid_t;
-#  define __u_char_defined
-# endif
-#endif
-
-typedef __loff_t loff_t;
-
-#ifndef __ino_t_defined
-# ifndef __USE_FILE_OFFSET64
-typedef __ino_t ino_t;
-# else
-typedef __ino64_t ino_t;
-# endif
-# define __ino_t_defined
-#endif
-#if defined __USE_LARGEFILE64 && !defined __ino64_t_defined
-typedef __ino64_t ino64_t;
-# define __ino64_t_defined
-#endif
-
-#ifndef __dev_t_defined
-typedef __dev_t dev_t;
-# define __dev_t_defined
-#endif
-
-#ifndef __gid_t_defined
-typedef __gid_t gid_t;
-# define __gid_t_defined
-#endif
-
-#ifndef __mode_t_defined
-typedef __mode_t mode_t;
-# define __mode_t_defined
-#endif
-
-#ifndef __nlink_t_defined
-typedef __nlink_t nlink_t;
-# define __nlink_t_defined
-#endif
-
-#ifndef __uid_t_defined
-typedef __uid_t uid_t;
-# define __uid_t_defined
-#endif
-
-#ifndef __off_t_defined
-# ifndef __USE_FILE_OFFSET64
-typedef __off_t off_t;
-# else
-typedef __off64_t off_t;
-# endif
-# define __off_t_defined
-#endif
-#if defined __USE_LARGEFILE64 && !defined __off64_t_defined
-typedef __off64_t off64_t;
-# define __off64_t_defined
-#endif
-
-#ifndef __pid_t_defined
-typedef __pid_t pid_t;
-# define __pid_t_defined
-#endif
-
-#if (defined __USE_SVID || defined __USE_XOPEN) && !defined __id_t_defined
-typedef __id_t id_t;
-# define __id_t_defined
-#endif
-
-#ifndef __ssize_t_defined
-typedef __ssize_t ssize_t;
-# define __ssize_t_defined
-#endif
-
-#ifdef	__USE_BSD
-# ifndef __daddr_t_defined
-typedef __daddr_t daddr_t;
-typedef __caddr_t caddr_t;
-#  define __daddr_t_defined
-# endif
-#endif
-
-#if (defined __USE_SVID || defined __USE_XOPEN) && !defined __key_t_defined
-typedef __key_t key_t;
-# define __key_t_defined
-#endif
-
-#ifdef __USE_XOPEN
-# define __need_clock_t
-#endif
-#define	__need_time_t
-#define __need_timer_t
-#define __need_clockid_t
-#include <time.h>
-
-#ifdef __USE_XOPEN
-# ifndef __useconds_t_defined
-typedef __useconds_t useconds_t;
-#  define __useconds_t_defined
-# endif
-# ifndef __suseconds_t_defined
-typedef __suseconds_t suseconds_t;
-#  define __suseconds_t_defined
-# endif
-#endif
-
-#define	__need_size_t
 #include <stddef.h>
+#include <stdint.h>
+#include <sys/cdefs.h>
 
-#ifdef __USE_MISC
-/* Old compatibility names for C types.  */
-typedef unsigned long int ulong;
-typedef unsigned short int ushort;
-typedef unsigned int uint;
-#endif
+#include <linux/types.h>
+#include <linux/posix_types.h>
 
-/* These size-specific names are used by some of the inet code.  */
+/* gids, uids, and pids are all 32-bit. */
+typedef __kernel_gid32_t __gid_t;
+typedef __gid_t gid_t;
+typedef __kernel_uid32_t __uid_t;
+typedef __uid_t uid_t;
+typedef __kernel_pid_t __pid_t;
+typedef __pid_t pid_t;
+typedef uint32_t __id_t;
+typedef __id_t id_t;
 
-#if !__GNUC_PREREQ (2, 7)
+typedef unsigned long blkcnt_t;
+typedef unsigned long blksize_t;
+typedef __kernel_caddr_t caddr_t;
+typedef __kernel_clock_t clock_t;
 
-/* These types are defined by the ISO C99 header <inttypes.h>. */
-# ifndef __int8_t_defined
-#  define __int8_t_defined
-typedef	char int8_t;
-typedef	short int int16_t;
-typedef	int int32_t;
-#  if __WORDSIZE == 64
-typedef long int int64_t;
-#  elif __GLIBC_HAVE_LONG_LONG
-__extension__ typedef long long int int64_t;
-#  endif
-# endif
+typedef __kernel_clockid_t __clockid_t;
+typedef __clockid_t clockid_t;
 
-/* But these were defined by ISO C without the first `_'.  */
-typedef	unsigned char u_int8_t;
-typedef	unsigned short int u_int16_t;
-typedef	unsigned int u_int32_t;
-# if __WORDSIZE == 64
-typedef unsigned long int u_int64_t;
-# elif __GLIBC_HAVE_LONG_LONG
-__extension__ typedef unsigned long long int u_int64_t;
-# endif
+typedef __kernel_daddr_t daddr_t;
+typedef unsigned long fsblkcnt_t;
+typedef unsigned long fsfilcnt_t;
 
-typedef int register_t;
+typedef __kernel_mode_t __mode_t;
+typedef __mode_t mode_t;
 
+typedef __kernel_key_t __key_t;
+typedef __key_t key_t;
+
+typedef __kernel_ino_t __ino_t;
+typedef __ino_t ino_t;
+
+typedef uint64_t ino64_t;
+
+typedef uint32_t __nlink_t;
+typedef __nlink_t nlink_t;
+
+typedef void* __timer_t;
+typedef __timer_t timer_t;
+
+typedef __kernel_suseconds_t __suseconds_t;
+typedef __suseconds_t suseconds_t;
+
+/* useconds_t is 32-bit on both LP32 and LP64. */
+typedef uint32_t __useconds_t;
+typedef __useconds_t useconds_t;
+
+#if !defined(__LP64__)
+/* This historical accident means that we had a 32-bit dev_t on 32-bit architectures. */
+typedef uint32_t dev_t;
 #else
-
-/* For GCC 2.7 and later, we can use specific type-size attributes.  */
-# define __intN_t(N, MODE) \
-  typedef int int##N##_t __attribute__ ((__mode__ (MODE)))
-# define __u_intN_t(N, MODE) \
-  typedef unsigned int u_int##N##_t __attribute__ ((__mode__ (MODE)))
-
-# ifndef __int8_t_defined
-#  define __int8_t_defined
-__intN_t (8, __QI__);
-__intN_t (16, __HI__);
-__intN_t (32, __SI__);
-__intN_t (64, __DI__);
-# endif
-
-__u_intN_t (8, __QI__);
-__u_intN_t (16, __HI__);
-__u_intN_t (32, __SI__);
-__u_intN_t (64, __DI__);
-
-typedef int register_t __attribute__ ((__mode__ (__word__)));
-
-
-/* Some code from BIND tests this macro to see if the types above are
-   defined.  */
-#endif
-#define __BIT_TYPES_DEFINED__	1
-
-
-#ifdef	__USE_BSD
-/* In BSD <sys/types.h> is expected to define BYTE_ORDER.  */
-# include <endian.h>
-
-/* It also defines `fd_set' and the FD_* macros for `select'.  */
-# include <sys/select.h>
-
-/* BSD defines these symbols, so we follow.  */
-# include <sys/sysmacros.h>
-#endif /* Use BSD.  */
-
-
-#if defined __USE_UNIX98 && !defined __blksize_t_defined
-typedef __blksize_t blksize_t;
-# define __blksize_t_defined
+typedef uint64_t dev_t;
 #endif
 
-/* Types from the Large File Support interface.  */
-#ifndef __USE_FILE_OFFSET64
-# ifndef __blkcnt_t_defined
-typedef __blkcnt_t blkcnt_t;	 /* Type to count number of disk blocks.  */
-#  define __blkcnt_t_defined
-# endif
-# ifndef __fsblkcnt_t_defined
-typedef __fsblkcnt_t fsblkcnt_t; /* Type to count file system blocks.  */
-#  define __fsblkcnt_t_defined
-# endif
-# ifndef __fsfilcnt_t_defined
-typedef __fsfilcnt_t fsfilcnt_t; /* Type to count file system inodes.  */
-#  define __fsfilcnt_t_defined
-# endif
+/* This historical accident means that we had a 32-bit time_t on 32-bit architectures. */
+typedef __kernel_time_t __time_t;
+typedef __time_t time_t;
+
+#if defined(__USE_FILE_OFFSET64) || defined(__LP64__)
+typedef int64_t off_t;
+typedef off_t loff_t;
+typedef loff_t off64_t;
 #else
-# ifndef __blkcnt_t_defined
-typedef __blkcnt64_t blkcnt_t;	   /* Type to count number of disk blocks.  */
-#  define __blkcnt_t_defined
-# endif
-# ifndef __fsblkcnt_t_defined
-typedef __fsblkcnt64_t fsblkcnt_t; /* Type to count file system blocks.  */
-#  define __fsblkcnt_t_defined
-# endif
-# ifndef __fsfilcnt_t_defined
-typedef __fsfilcnt64_t fsfilcnt_t; /* Type to count file system inodes.  */
-#  define __fsfilcnt_t_defined
-# endif
+/* This historical accident means that we had a 32-bit off_t on 32-bit architectures. */
+typedef __kernel_off_t off_t;
+typedef __kernel_loff_t loff_t;
+typedef loff_t off64_t;
 #endif
 
-#ifdef __USE_LARGEFILE64
-typedef __blkcnt64_t blkcnt64_t;     /* Type to count number of disk blocks. */
-typedef __fsblkcnt64_t fsblkcnt64_t; /* Type to count file system blocks.  */
-typedef __fsfilcnt64_t fsfilcnt64_t; /* Type to count file system inodes.  */
+/* while POSIX wants these in <sys/types.h>, we
+ * declare then in <pthread.h> instead */
+#if 0
+typedef  .... pthread_attr_t;
+typedef  .... pthread_cond_t;
+typedef  .... pthread_condattr_t;
+typedef  .... pthread_key_t;
+typedef  .... pthread_mutex_t;
+typedef  .... pthread_once_t;
+typedef  .... pthread_rwlock_t;
+typedef  .... pthread_rwlock_attr_t;
+typedef  .... pthread_t;
 #endif
 
+#if !defined(__LP64__)
+/* This historical accident means that we had a signed socklen_t on 32-bit architectures. */
+typedef int32_t __socklen_t;
+#else
+/* LP64 still has a 32-bit socklen_t. */
+typedef uint32_t __socklen_t;
+#endif
+typedef __socklen_t socklen_t;
 
-/* Now add the thread types.  */
-#if defined __USE_POSIX199506 || defined __USE_UNIX98
-# include <bits/pthreadtypes.h>
+typedef __builtin_va_list __va_list;
+
+#ifndef _SSIZE_T_DEFINED_
+#define _SSIZE_T_DEFINED_
+/* Traditionally, bionic's ssize_t was "long int". This caused GCC to emit warnings when you
+ * pass a ssize_t to a printf-style function. The correct type is __kernel_ssize_t, which is
+ * "int", which isn't an ABI change for C code (because they're the same size) but is an ABI
+ * change for C++ because "int" and "long int" mangle to "i" and "l" respectively. So until
+ * we can fix the ABI, this change should not be propagated to the NDK. http://b/8253769. */
+typedef __kernel_ssize_t ssize_t;
 #endif
 
-__END_DECLS
+typedef unsigned int        uint_t;
+typedef unsigned int        uint;
 
-#endif /* sys/types.h */
+#ifdef __BSD_VISIBLE
+#include <sys/sysmacros.h>
+
+typedef unsigned char  u_char;
+typedef unsigned short u_short;
+typedef unsigned int   u_int;
+typedef unsigned long  u_long;
+
+typedef uint32_t u_int32_t;
+typedef uint16_t u_int16_t;
+typedef uint8_t  u_int8_t;
+typedef uint64_t u_int64_t;
+#endif
+
+#endif

@@ -1,56 +1,43 @@
-/* Copyright (C) 1991, 92, 96, 97, 98, 99 Free Software Foundation, Inc.
-   This file is part of the GNU C Library.
+/*
+ * Copyright (C) 2008 The Android Open Source Project
+ * All rights reserved.
+ *
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions
+ * are met:
+ *  * Redistributions of source code must retain the above copyright
+ *    notice, this list of conditions and the following disclaimer.
+ *  * Redistributions in binary form must reproduce the above copyright
+ *    notice, this list of conditions and the following disclaimer in
+ *    the documentation and/or other materials provided with the
+ *    distribution.
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+ * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+ * LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS
+ * FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE
+ * COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT,
+ * INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING,
+ * BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS
+ * OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED
+ * AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
+ * OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT
+ * OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
+ * SUCH DAMAGE.
+ */
 
-   The GNU C Library is free software; you can redistribute it and/or
-   modify it under the terms of the GNU Lesser General Public
-   License as published by the Free Software Foundation; either
-   version 2.1 of the License, or (at your option) any later version.
+#ifndef _SYS_FILE_H_
+#define _SYS_FILE_H_
 
-   The GNU C Library is distributed in the hope that it will be useful,
-   but WITHOUT ANY WARRANTY; without even the implied warranty of
-   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
-   Lesser General Public License for more details.
+#include <sys/cdefs.h>
+#include <sys/types.h>
 
-   You should have received a copy of the GNU Lesser General Public
-   License along with the GNU C Library; if not, write to the Free
-   Software Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
-   02111-1307 USA.  */
-
-#ifndef	_SYS_FILE_H
-#define	_SYS_FILE_H	1
-
-#include <features.h>
-
-#ifndef	_FCNTL_H
-# include <fcntl.h>
-#endif
+#include <fcntl.h>
 
 __BEGIN_DECLS
 
-
-/* Alternate names for values for the WHENCE argument to `lseek'.
-   These are the same as SEEK_SET, SEEK_CUR, and SEEK_END, respectively.  */
-#ifndef L_SET
-# define L_SET	0	/* Seek from beginning of file.  */
-# define L_INCR	1	/* Seek from current position.  */
-# define L_XTND	2	/* Seek from end of file.  */
-#endif
-
-
-/* Operations for the `flock' call.  */
-#define	LOCK_SH	1	/* Shared lock.  */
-#define	LOCK_EX	2 	/* Exclusive lock.  */
-#define	LOCK_UN	8	/* Unlock.  */
-
-/* Can be OR'd in to one of the above.  */
-#define	LOCK_NB	4	/* Don't block when locking.  */
-
-
-/* Apply or remove an advisory lock, according to OPERATION,
-   on the file FD refers to.  */
-extern int flock (int __fd, int __operation) __THROW;
-
+int flock(int, int);
 
 __END_DECLS
 
-#endif /* sys/file.h  */
+#endif /* _SYS_FILE_H_ */

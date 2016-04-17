@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2008 The Android Open Source Project
+ * Copyright (C) 2015 The Android Open Source Project
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -26,17 +26,18 @@
  * SUCH DAMAGE.
  */
 
-#ifndef _SYS_FSUID_H_
-#define _SYS_FSUID_H_
+#ifndef _SYS_ATOMICS_H_
+#define _SYS_ATOMICS_H_
 
-#include <sys/cdefs.h>
-#include <sys/types.h>
+/*
+ * These got proper out of line definitions in L. Putting the inline definitions
+ * back for old targets brings us closer to being able to use one set of headers
+ * for all API levels.
+ *
+ * The other inlines we put back went in to their appropriate headers, but the
+ * sys/atomics.h header was removed, so we'll just add these somewhere we can be
+ * sure they will be included.
+ */
+#include <android/legacy_sys_atomics_inlines.h>
 
-__BEGIN_DECLS
-
-extern int setfsuid(uid_t);
-extern int setfsgid(gid_t);
-
-__END_DECLS
-
-#endif /* _SYS_FSUID_H_ */
+#endif /* _SYS_ATOMICS_H_ */

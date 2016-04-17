@@ -26,17 +26,25 @@
  * SUCH DAMAGE.
  */
 
-#ifndef _SYS_FSUID_H_
-#define _SYS_FSUID_H_
+#ifndef _SYS_EVENTFD_H
+#define _SYS_EVENTFD_H
 
 #include <sys/cdefs.h>
-#include <sys/types.h>
+#include <fcntl.h>
 
 __BEGIN_DECLS
 
-extern int setfsuid(uid_t);
-extern int setfsgid(gid_t);
+#define EFD_CLOEXEC O_CLOEXEC
+#define EFD_NONBLOCK O_NONBLOCK
+
+/* type of event counter */
+typedef uint64_t eventfd_t;
+
+extern int eventfd(unsigned int initial_value, int flags);
+
+extern int eventfd_read(int fd, eventfd_t* value);
+extern int eventfd_write(int fd, eventfd_t value);
 
 __END_DECLS
 
-#endif /* _SYS_FSUID_H_ */
+#endif /* _SYS_EVENTFD_H */

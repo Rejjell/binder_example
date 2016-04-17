@@ -1,85 +1,34 @@
-/* Copyright (C) 1995-1997,1999,2000,2003,2006,2007
-   Free Software Foundation, Inc.
-   This file is part of the GNU C Library.
+/*
+ * Copyright (C) 2014 The Android Open Source Project
+ * All rights reserved.
+ *
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions
+ * are met:
+ *  * Redistributions of source code must retain the above copyright
+ *    notice, this list of conditions and the following disclaimer.
+ *  * Redistributions in binary form must reproduce the above copyright
+ *    notice, this list of conditions and the following disclaimer in
+ *    the documentation and/or other materials provided with the
+ *    distribution.
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+ * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+ * LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS
+ * FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE
+ * COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT,
+ * INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING,
+ * BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS
+ * OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED
+ * AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
+ * OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT
+ * OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
+ * SUCH DAMAGE.
+ */
 
-   The GNU C Library is free software; you can redistribute it and/or
-   modify it under the terms of the GNU Lesser General Public
-   License as published by the Free Software Foundation; either
-   version 2.1 of the License, or (at your option) any later version.
+#ifndef _SYS_MSG_H_
+#define _SYS_MSG_H_
 
-   The GNU C Library is distributed in the hope that it will be useful,
-   but WITHOUT ANY WARRANTY; without even the implied warranty of
-   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
-   Lesser General Public License for more details.
+#include <linux/msg.h>
 
-   You should have received a copy of the GNU Lesser General Public
-   License along with the GNU C Library; if not, write to the Free
-   Software Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
-   02111-1307 USA.  */
-
-#ifndef _SYS_MSG_H
-#define _SYS_MSG_H
-
-#include <features.h>
-
-#define __need_size_t
-#include <stddef.h>
-
-/* Get common definition of System V style IPC.  */
-#include <sys/ipc.h>
-
-/* Get system dependent definition of `struct msqid_ds' and more.  */
-#include <bits/msq.h>
-
-/* Define types required by the standard.  */
-#define	__need_time_t
-#include <time.h>
-
-#ifndef __pid_t_defined
-typedef __pid_t pid_t;
-# define __pid_t_defined
-#endif
-
-#ifndef __ssize_t_defined
-typedef __ssize_t ssize_t;
-# define __ssize_t_defined
-#endif
-
-/* The following System V style IPC functions implement a message queue
-   system.  The definition is found in XPG2.  */
-
-#ifdef __USE_GNU
-/* Template for struct to be used as argument for `msgsnd' and `msgrcv'.  */
-struct msgbuf
-  {
-    long int mtype;		/* type of received/sent message */
-    char mtext[1];		/* text of the message */
-  };
-#endif
-
-
-__BEGIN_DECLS
-
-/* Message queue control operation.  */
-extern int msgctl (int __msqid, int __cmd, struct msqid_ds *__buf) __THROW;
-
-/* Get messages queue.  */
-extern int msgget (key_t __key, int __msgflg) __THROW;
-
-/* Receive message from message queue.
-
-   This function is a cancellation point and therefore not marked with
-   __THROW.  */
-extern ssize_t msgrcv (int __msqid, void *__msgp, size_t __msgsz,
-		       long int __msgtyp, int __msgflg);
-
-/* Send message to message queue.
-
-   This function is a cancellation point and therefore not marked with
-   __THROW.  */
-extern int msgsnd (int __msqid, __const void *__msgp, size_t __msgsz,
-		   int __msgflg);
-
-__END_DECLS
-
-#endif /* sys/msg.h */
+#endif /* _SYS_MSG_H_ */

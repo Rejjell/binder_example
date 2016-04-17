@@ -1,46 +1,45 @@
-/* Copyright (C) 1991, 92, 93, 94, 96, 98, 99 Free Software Foundation, Inc.
-   This file is part of the GNU C Library.
+/*
+ * Copyright (C) 2008 The Android Open Source Project
+ * All rights reserved.
+ *
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions
+ * are met:
+ *  * Redistributions of source code must retain the above copyright
+ *    notice, this list of conditions and the following disclaimer.
+ *  * Redistributions in binary form must reproduce the above copyright
+ *    notice, this list of conditions and the following disclaimer in
+ *    the documentation and/or other materials provided with the
+ *    distribution.
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+ * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+ * LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS
+ * FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE
+ * COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT,
+ * INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING,
+ * BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS
+ * OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED
+ * AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
+ * OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT
+ * OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
+ * SUCH DAMAGE.
+ */
+#ifndef _SYS_IOCTL_H_
+#define _SYS_IOCTL_H_
 
-   The GNU C Library is free software; you can redistribute it and/or
-   modify it under the terms of the GNU Lesser General Public
-   License as published by the Free Software Foundation; either
-   version 2.1 of the License, or (at your option) any later version.
+#include <sys/cdefs.h>
+#include <linux/ioctl.h>
+/*
+ * NetBSD and glibc's <sys/ioctl.h> provide some of the
+ * terminal-related ioctl data structures such as struct winsize.
+ */
+#include <linux/termios.h>
+#include <asm/ioctls.h>
+#include <asm/termbits.h>
+#include <sys/ioctl_compat.h>
+#include <linux/tty.h>
 
-   The GNU C Library is distributed in the hope that it will be useful,
-   but WITHOUT ANY WARRANTY; without even the implied warranty of
-   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
-   Lesser General Public License for more details.
+#include <bits/ioctl.h>
 
-   You should have received a copy of the GNU Lesser General Public
-   License along with the GNU C Library; if not, write to the Free
-   Software Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
-   02111-1307 USA.  */
-
-#ifndef	_SYS_IOCTL_H
-#define	_SYS_IOCTL_H	1
-
-#include <features.h>
-
-__BEGIN_DECLS
-
-/* Get the list of `ioctl' requests and related constants.  */
-#include <bits/ioctls.h>
-
-/* Define some types used by `ioctl' requests.  */
-#include <bits/ioctl-types.h>
-
-/* On a Unix system, the system <sys/ioctl.h> probably defines some of
-   the symbols we define in <sys/ttydefaults.h> (usually with the same
-   values).  The code to generate <bits/ioctls.h> has omitted these
-   symbols to avoid the conflict, but a Unix program expects <sys/ioctl.h>
-   to define them, so we must include <sys/ttydefaults.h> here.  */
-#include <sys/ttydefaults.h>
-
-/* Perform the I/O control operation specified by REQUEST on FD.
-   One argument may follow; its presence and type depend on REQUEST.
-   Return value depends on REQUEST.  Usually -1 indicates error.  */
-extern int ioctl (int __fd, unsigned long int __request, ...) __THROW;
-
-__END_DECLS
-
-#endif /* sys/ioctl.h */
+#endif /* _SYS_IOCTL_H_ */

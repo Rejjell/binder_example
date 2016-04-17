@@ -1,130 +1,84 @@
-/* Copyright (C) 2002,2003,2004,2005,2006,2007,2008 Free Software Foundation, Inc.
-   This file is part of the GNU C Library.
+/*
+ * Copyright (C) 2008 The Android Open Source Project
+ * All rights reserved.
+ *
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions
+ * are met:
+ *  * Redistributions of source code must retain the above copyright
+ *    notice, this list of conditions and the following disclaimer.
+ *  * Redistributions in binary form must reproduce the above copyright
+ *    notice, this list of conditions and the following disclaimer in
+ *    the documentation and/or other materials provided with the
+ *    distribution.
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+ * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+ * LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS
+ * FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE
+ * COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT,
+ * INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING,
+ * BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS
+ * OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED
+ * AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
+ * OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT
+ * OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
+ * SUCH DAMAGE.
+ */
 
-   The GNU C Library is free software; you can redistribute it and/or
-   modify it under the terms of the GNU Lesser General Public
-   License as published by the Free Software Foundation; either
-   version 2.1 of the License, or (at your option) any later version.
+#ifndef _SYS_EPOLL_H_
+#define _SYS_EPOLL_H_
 
-   The GNU C Library is distributed in the hope that it will be useful,
-   but WITHOUT ANY WARRANTY; without even the implied warranty of
-   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
-   Lesser General Public License for more details.
-
-   You should have received a copy of the GNU Lesser General Public
-   License along with the GNU C Library; if not, write to the Free
-   Software Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
-   02111-1307 USA.  */
-
-#ifndef	_SYS_EPOLL_H
-#define	_SYS_EPOLL_H	1
-
-#include <stdint.h>
+#include <sys/cdefs.h>
 #include <sys/types.h>
+#include <fcntl.h> /* For O_CLOEXEC. */
+#include <signal.h> /* For sigset_t. */
 
-/* Get __sigset_t.  */
-#include <bits/sigset.h>
+__BEGIN_DECLS
 
-#ifndef __sigset_t_defined
-# define __sigset_t_defined
-typedef __sigset_t sigset_t;
-#endif
+#define EPOLLIN          0x00000001
+#define EPOLLPRI         0x00000002
+#define EPOLLOUT         0x00000004
+#define EPOLLERR         0x00000008
+#define EPOLLHUP         0x00000010
+#define EPOLLRDNORM      0x00000040
+#define EPOLLRDBAND      0x00000080
+#define EPOLLWRNORM      0x00000100
+#define EPOLLWRBAND      0x00000200
+#define EPOLLMSG         0x00000400
+#define EPOLLRDHUP       0x00002000
+#define EPOLLWAKEUP      0x20000000
+#define EPOLLONESHOT     0x40000000
+#define EPOLLET          0x80000000
 
+#define EPOLL_CTL_ADD    1
+#define EPOLL_CTL_DEL    2
+#define EPOLL_CTL_MOD    3
 
-enum EPOLL_EVENTS
-  {
-    EPOLLIN = 0x001,
-#define EPOLLIN EPOLLIN
-    EPOLLPRI = 0x002,
-#define EPOLLPRI EPOLLPRI
-    EPOLLOUT = 0x004,
-#define EPOLLOUT EPOLLOUT
-    EPOLLRDNORM = 0x040,
-#define EPOLLRDNORM EPOLLRDNORM
-    EPOLLRDBAND = 0x080,
-#define EPOLLRDBAND EPOLLRDBAND
-    EPOLLWRNORM = 0x100,
-#define EPOLLWRNORM EPOLLWRNORM
-    EPOLLWRBAND = 0x200,
-#define EPOLLWRBAND EPOLLWRBAND
-    EPOLLMSG = 0x400,
-#define EPOLLMSG EPOLLMSG
-    EPOLLERR = 0x008,
-#define EPOLLERR EPOLLERR
-    EPOLLHUP = 0x010,
-#define EPOLLHUP EPOLLHUP
-    EPOLLRDHUP = 0x2000,
-#define EPOLLRDHUP EPOLLRDHUP
-    EPOLLONESHOT = (1 << 30),
-#define EPOLLONESHOT EPOLLONESHOT
-    EPOLLET = (1 << 31)
-#define EPOLLET EPOLLET
-  };
+#define EPOLL_CLOEXEC O_CLOEXEC
 
-
-/* Valid opcodes ( "op" parameter ) to issue to epoll_ctl().  */
-#define EPOLL_CTL_ADD 1	/* Add a file decriptor to the interface.  */
-#define EPOLL_CTL_DEL 2	/* Remove a file decriptor from the interface.  */
-#define EPOLL_CTL_MOD 3	/* Change file decriptor epoll_event structure.  */
-
-
-typedef union epoll_data
-{
-  void *ptr;
+typedef union epoll_data {
+  void* ptr;
   int fd;
   uint32_t u32;
   uint64_t u64;
 } epoll_data_t;
 
-struct epoll_event
-{
-  uint32_t events;	/* Epoll events */
-  epoll_data_t data;	/* User data variable */
-} __attribute__ ((__packed__));
+struct epoll_event {
+  uint32_t events;
+  epoll_data_t data;
+}
+#ifdef __x86_64__
+__packed
+#endif
+;
 
-
-__BEGIN_DECLS
-
-/* Creates an epoll instance.  Returns an fd for the new instance.
-   The "size" parameter is a hint specifying the number of file
-   descriptors to be associated with the new instance.  The fd
-   returned by epoll_create() should be closed with close().  */
-extern int epoll_create (int __size) __THROW;
-
-
-/* Manipulate an epoll instance "epfd". Returns 0 in case of success,
-   -1 in case of error ( the "errno" variable will contain the
-   specific error code ) The "op" parameter is one of the EPOLL_CTL_*
-   constants defined above. The "fd" parameter is the target of the
-   operation. The "event" parameter describes which events the caller
-   is interested in and any associated user data.  */
-extern int epoll_ctl (int __epfd, int __op, int __fd,
-		      struct epoll_event *__event) __THROW;
-
-
-/* Wait for events on an epoll instance "epfd". Returns the number of
-   triggered events returned in "events" buffer. Or -1 in case of
-   error with the "errno" variable set to the specific error code. The
-   "events" parameter is a buffer that will contain triggered
-   events. The "maxevents" is the maximum number of events to be
-   returned ( usually size of "events" ). The "timeout" parameter
-   specifies the maximum wait time in milliseconds (-1 == infinite).
-
-   This function is a cancellation point and therefore not marked with
-   __THROW.  */
-extern int epoll_wait (int __epfd, struct epoll_event *__events,
-		       int __maxevents, int __timeout);
-
-
-/* Same as epoll_wait, but the thread's signal mask is temporarily
-   and atomically replaced with the one provided as parameter.
-
-   This function is a cancellation point and therefore not marked with
-   __THROW.  */
-extern int epoll_pwait (int __epfd, struct epoll_event *__events,
-			int __maxevents, int __timeout,
-			__const __sigset_t *__ss);
+int epoll_create(int);
+int epoll_create1(int);
+int epoll_ctl(int, int, int, struct epoll_event*);
+int epoll_wait(int, struct epoll_event*, int, int);
+int epoll_pwait(int, struct epoll_event*, int, int, const sigset_t*);
 
 __END_DECLS
 
-#endif /* sys/epoll.h */
+#endif  /* _SYS_EPOLL_H_ */

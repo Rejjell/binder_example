@@ -26,17 +26,8 @@
  * SUCH DAMAGE.
  */
 
-#ifndef _SYS_FSUID_H_
-#define _SYS_FSUID_H_
+// This file used to contain the declarations of sysconf and its associated constants.
+// No standard mentions a <sys/sysconf.h>, but there are enough users in vendor (and potential ones
+// in the NDK) to warrant not breaking source compatibility.
 
-#include <sys/cdefs.h>
-#include <sys/types.h>
-
-__BEGIN_DECLS
-
-extern int setfsuid(uid_t);
-extern int setfsgid(gid_t);
-
-__END_DECLS
-
-#endif /* _SYS_FSUID_H_ */
+#include <bits/sysconf.h>

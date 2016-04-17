@@ -1,87 +1,50 @@
-/* Copyright (C) 1991,92,94,96,97,99,2002 Free Software Foundation, Inc.
-   This file is part of the GNU C Library.
-
-   The GNU C Library is free software; you can redistribute it and/or
-   modify it under the terms of the GNU Lesser General Public
-   License as published by the Free Software Foundation; either
-   version 2.1 of the License, or (at your option) any later version.
-
-   The GNU C Library is distributed in the hope that it will be useful,
-   but WITHOUT ANY WARRANTY; without even the implied warranty of
-   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
-   Lesser General Public License for more details.
-
-   You should have received a copy of the GNU Lesser General Public
-   License along with the GNU C Library; if not, write to the Free
-   Software Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
-   02111-1307 USA.  */
-
 /*
- *	POSIX Standard: 4.4 System Identification	<sys/utsname.h>
+ * Copyright (C) 2008 The Android Open Source Project
+ * All rights reserved.
+ *
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions
+ * are met:
+ *  * Redistributions of source code must retain the above copyright
+ *    notice, this list of conditions and the following disclaimer.
+ *  * Redistributions in binary form must reproduce the above copyright
+ *    notice, this list of conditions and the following disclaimer in
+ *    the documentation and/or other materials provided with the
+ *    distribution.
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+ * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+ * LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS
+ * FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE
+ * COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT,
+ * INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING,
+ * BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS
+ * OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED
+ * AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
+ * OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT
+ * OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
+ * SUCH DAMAGE.
  */
+#ifndef _SYS_UTSNAME_H_
+#define _SYS_UTSNAME_H_
 
-#ifndef	_SYS_UTSNAME_H
-#define	_SYS_UTSNAME_H	1
-
-#include <features.h>
+#include <sys/cdefs.h>
 
 __BEGIN_DECLS
 
-#include <bits/utsname.h>
+#define SYS_NMLN 65
 
-#ifndef _UTSNAME_SYSNAME_LENGTH
-# define _UTSNAME_SYSNAME_LENGTH _UTSNAME_LENGTH
-#endif
-#ifndef _UTSNAME_NODENAME_LENGTH
-# define _UTSNAME_NODENAME_LENGTH _UTSNAME_LENGTH
-#endif
-#ifndef _UTSNAME_RELEASE_LENGTH
-# define _UTSNAME_RELEASE_LENGTH _UTSNAME_LENGTH
-#endif
-#ifndef _UTSNAME_VERSION_LENGTH
-# define _UTSNAME_VERSION_LENGTH _UTSNAME_LENGTH
-#endif
-#ifndef _UTSNAME_MACHINE_LENGTH
-# define _UTSNAME_MACHINE_LENGTH _UTSNAME_LENGTH
-#endif
+struct utsname {
+    char  sysname   [SYS_NMLN];
+    char  nodename  [SYS_NMLN];
+    char  release   [SYS_NMLN];
+    char  version   [SYS_NMLN];
+    char  machine   [SYS_NMLN];
+    char  domainname[SYS_NMLN];
+};
 
-/* Structure describing the system and machine.  */
-struct utsname
-  {
-    /* Name of the implementation of the operating system.  */
-    char sysname[_UTSNAME_SYSNAME_LENGTH];
-
-    /* Name of this node on the network.  */
-    char nodename[_UTSNAME_NODENAME_LENGTH];
-
-    /* Current release level of this implementation.  */
-    char release[_UTSNAME_RELEASE_LENGTH];
-    /* Current version level of this release.  */
-    char version[_UTSNAME_VERSION_LENGTH];
-
-    /* Name of the hardware type the system is running on.  */
-    char machine[_UTSNAME_MACHINE_LENGTH];
-
-#if _UTSNAME_DOMAIN_LENGTH - 0
-    /* Name of the domain of this node on the network.  */
-# ifdef __USE_GNU
-    char domainname[_UTSNAME_DOMAIN_LENGTH];
-# else
-    char __domainname[_UTSNAME_DOMAIN_LENGTH];
-# endif
-#endif
-  };
-
-#ifdef __USE_SVID
-/* Note that SVID assumes all members have the same size.  */
-# define SYS_NMLN  _UTSNAME_LENGTH
-#endif
-
-
-/* Put information about the system in NAME.  */
-extern int uname (struct utsname *__name) __THROW;
-
+extern int uname(struct utsname *);
 
 __END_DECLS
 
-#endif /* sys/utsname.h  */
+#endif /* _SYS_UTSNAME_H_ */

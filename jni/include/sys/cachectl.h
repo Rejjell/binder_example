@@ -25,18 +25,11 @@
  * OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
  * SUCH DAMAGE.
  */
+#ifndef _SYS_CACHECTL_H
+#define _SYS_CACHECTL_H 1
 
-#ifndef _SYS_FSUID_H_
-#define _SYS_FSUID_H_
-
-#include <sys/cdefs.h>
-#include <sys/types.h>
-
-__BEGIN_DECLS
-
-extern int setfsuid(uid_t);
-extern int setfsgid(gid_t);
-
-__END_DECLS
-
-#endif /* _SYS_FSUID_H_ */
+#ifdef __mips__
+#include <asm/cachectl.h>
+extern int __cachectl (void *addr, __const int nbytes, __const int op);
+#endif
+#endif /* sys/cachectl.h */
