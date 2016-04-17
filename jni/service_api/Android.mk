@@ -17,7 +17,7 @@ LOCAL_CLANG := true
 
 LOCAL_CPPFLAGS := \
         -std=c++11 \
-
+LOCAL_LDLIBS := -llog -lutils -llibc++ -lcutils -lbinder
 LOCAL_MODULE_TAGS := optional
 
 LOCAL_MODULE:= OmadmServer
