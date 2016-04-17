@@ -15,7 +15,6 @@ LOCAL_C_INCLUDES := $(LOCAL_PATH) $(LOCAL_PATH)/../include
 LOCAL_C_INCLUDES += $(OMADM_C_INCLUDES)
 
 LOCAL_CLANG := true
-LOCAL_SHARE_LIBRARIES := libbinder
 LOCAL_CPPFLAGS := \
         -std=c++11 \
 
