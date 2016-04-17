@@ -1,3 +1,23 @@
+libs := ../libs
+
+LOCAL_PATH := $(call my-dir)
+include $(CLEAR_VARS)
+LOCAL_MODULE := binder
+LOCAL_SRC_FILES := $(libs)/libbinder.so
+include $(PREBUILT_SHARED_LIBRARY)
+
+LOCAL_PATH := $(call my-dir)
+include $(CLEAR_VARS)
+LOCAL_MODULE := utils
+LOCAL_SRC_FILES := $(libs)/libutils.so
+include $(PREBUILT_SHARED_LIBRARY)
+
+LOCAL_PATH := $(call my-dir)
+include $(CLEAR_VARS)
+LOCAL_MODULE := cutils
+LOCAL_SRC_FILES := $(libs)/libcutils.so
+include $(PREBUILT_SHARED_LIBRARY)
+
 LOCAL_PATH:= $(call my-dir)
 include $(CLEAR_VARS)
 
@@ -17,7 +37,7 @@ LOCAL_CLANG := true
 
 LOCAL_CPPFLAGS := \
         -std=c++11 \
-LOCAL_LDLIBS := -llog -lutils -llibc++ -lcutils -lbinder
+#LOCAL_LDLIBS := -llog -lutils -llibc++ -lcutils -lbinder
 LOCAL_MODULE_TAGS := optional
 
 LOCAL_MODULE:= OmadmServer
