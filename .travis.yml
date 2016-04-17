@@ -1,16 +1,16 @@
-language: android
+language: cpp
 sudo: true
-android:
-  components:
-    - tools
-    - platform-tools
-    - build-tools-23.0.2
-    - android-23
-    - extra-google-m2repository
-    - extra-android-m2repository
-addons:
-  apt_packages:
-    - pandoc
+#android:
+#  components:
+#- tools
+#    - platform-tools
+#    - build-tools-23.0.2
+#    - android-23
+#    - extra-google-m2repository
+#    - extra-android-m2repository
+#addons:
+#  apt_packages:
+#    - pandoc
   #artifacts: 
   #  true
   #  paths:
@@ -18,6 +18,14 @@ addons:
 before_install:
   - git clone https://github.com/urho3d/android-ndk.git $HOME/android-ndk-root
   - export ANDROID_NDK_HOME=$HOME/android-ndk-root
+  
+# Emulator Management: Create, Start and Wait
+script:
+  - $ANDROID_NDK_HOME/ndk-build
+ # - echo no | android create avd --force -n test -t android-19 --abi armeabi-v7a
+ # - emulator -avd test -no-audio -no-window &
+ # - android-wait-for-emulator
+ # - adb shell input keyevent 82 &
 #script:
   # check that all Support section of the README are the same.
   #- for f in */README.md; do sed -n '/Support/,/License/p' $f > /tmp/$(dirname $f).readme; done && diff -u --from-file=/tmp/hello-jni.readme /tmp/*.readme
