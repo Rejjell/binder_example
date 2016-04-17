@@ -1,7 +1,8 @@
 LOCAL_PATH:= $(call my-dir)
 include $(CLEAR_VARS)
 
-LOCAL_SRC_FILES:= server.cpp main.cpp
+LOCAL_SRC_FILES:= service_api_impl.cpp
+#server.cpp main.cpp
 
 LOCAL_SHARED_LIBRARIES := libc++ libutils libbinder liblog libcutils
 
