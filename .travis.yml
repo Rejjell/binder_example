@@ -16,7 +16,7 @@ sudo: true
   #  paths:
   #    - $(git ls-files -o | grep app/build/outputs | tr "\n" ":")
 before_install:
-  -apt-get install libcap-dev
+  #-apt-get install libcap-dev
   - git clone https://github.com/urho3d/android-ndk.git $HOME/android-ndk-root
   - export ANDROID_NDK_HOME=$HOME/android-ndk-root
   
