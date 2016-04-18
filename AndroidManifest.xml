@@ -4,7 +4,7 @@
         android:versionName="1.0">
 
     <!-- This is the platform API where NativeActivity was introduced. -->
-    <uses-sdk android:minSdkVersion="9" />
+    <uses-sdk android:minSdkVersion="21" />
 
     <!-- This .apk has no Java code itself, so set hasCode to false. -->
     <application android:label="Bind_wrapper" android:hasCode="false">

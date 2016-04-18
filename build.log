@@ -1,0 +1,4 @@
+../../../work/binder_example/jni/libs
+[armeabi] Install        : libbinder.so => libs/armeabi/libbinder.so
+[armeabi] Install        : libcutils.so => libs/armeabi/libcutils.so
+[armeabi] SharedLibrary  : libpal.so

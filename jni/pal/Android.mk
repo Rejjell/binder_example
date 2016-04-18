@@ -1,27 +1,8 @@
 # C++11 support is enabled
 LOCAL_PATH := $(call my-dir)
-libs := $(LOCAL_PATH)/../libs
-$(info $(libs))
-LOCAL_PATH := $(call my-dir)
 include $(CLEAR_VARS)
-LOCAL_MODULE := binder
-LOCAL_SRC_FILES := $(libs)/libbinder.so
-include $(PREBUILT_SHARED_LIBRARY)
 
-LOCAL_PATH := $(call my-dir)
-include $(CLEAR_VARS)
-LOCAL_MODULE := utils
-LOCAL_SRC_FILES := $(libs)/libutils.so
-include $(PREBUILT_SHARED_LIBRARY)
-
-LOCAL_PATH := $(call my-dir)
-include $(CLEAR_VARS)
-LOCAL_MODULE := cutils
-LOCAL_SRC_FILES := $(libs)/libcutils.so
-include $(PREBUILT_SHARED_LIBRARY)
-
-LOCAL_PATH:= $(call my-dir)
-include $(CLEAR_VARS)
+LOCAL_ALLOW_UNDEFINED_SYMBOLS := true
 
 LOCAL_SRC_FILES:= ../service_api/service_api_impl.cpp pal.cpp
 
@@ -38,8 +19,7 @@ LOCAL_CLANG := true
 LOCAL_CPPFLAGS := \
         -std=c++11 \
 
-#LOCAL_LDLIBS := -llog -lutils -llibc++ -lcutils -lbinder
-	
+#LOCAL_LDLIBS := -llog -lutils -llibc++ -lcutils -lbinder -lpthread
 LOCAL_MODULE:= libpal
 LOCAL_MODULE_OWNER := verizon
 
