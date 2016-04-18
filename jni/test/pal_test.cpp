@@ -5,7 +5,7 @@
 #include <string.h>
 #include <thread>
 #include <utils/Log.h>
-#include <utils/Vector.h>
+//#include <utils/Vector.h>
 
 #include "pal.h"
 
@@ -19,7 +19,7 @@ using namespace android;
 
 static std::mutex mtx;
 static std::condition_variable cv;
-static Vector<request_t> input_events_queue;
+//static Vector<request_t> input_events_queue;
 
     /*********************************************************************
      * Helpers
@@ -28,13 +28,13 @@ static Vector<request_t> input_events_queue;
      // callback function
 void pushUserEvent(request_t event) {
     std::unique_lock<std::mutex> lck(mtx);
-    input_events_queue.push_front(event);
+    //input_events_queue.push_front(event);
     cv.notify_one();
     ALOGD("pushUserEvent(): tid: %d", gettid());
 }
     // wait-notify helper
 bool is_events_available() {
-    return !input_events_queue.isEmpty();
+    return false; //!input_events_queue.isEmpty();
 }
 
     // Allocates PAL data buffer
@@ -78,6 +78,8 @@ int main(int argc, char *argv[])
     UNUSED(argc);
     UNUSED(argv);
     int reply = 0;
+    ALOGI("I: Tests runed");
+
     data_buffer_t dataBuffer;
 
         // Initialize PAL. Get binder to framework service.
