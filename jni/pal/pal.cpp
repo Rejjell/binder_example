@@ -21,6 +21,7 @@ static Mutex gPalLock;
 sp<IOmadmServiceAPI> BpOmadmServiceAPI::mBindrToService = NULL;
 sp<DeathNotifier> DeathNotifier::mDeathNotifier = NULL;
 bool BpOmadmServiceAPI::mInitialized = false;
+sp<IOmadmServiceListener> OmadmListener::mRemoteLst = NULL;
 
     /*
      * Helpers declaration
@@ -29,7 +30,8 @@ bool isPalInitialized();
 int init_binder(bool wait_forever);
 
 
-    /*
+    /*******************************************************************************
+     *
      * User accessible interface
      */
 
@@ -129,6 +131,52 @@ int pal_device_volumes_notifications_set(data_buffer_t *title, data_buffer_t *me
     return reply ? NO_ERROR : ERROR_RETURN;
 }
 
+
+    /**
+     * This method adds listener to the service
+     * @param local callback
+     * @return execution status 0 on success or error code
+     * on failure.
+     */
+/*int pal_register_listener(userCallback local_callback) {
+    AutoMutex _l(gPalLock);
+
+    if(!isPalInitialized())
+        return ERROR_INIT;
+
+    if (OmadmListener::mRemoteLst == NULL) {
+        OmadmListener::mRemoteLst = new OmadmListener();
+    }
+    int reply = BpOmadmServiceAPI::mBindrToService->addListener(OmadmListener::mRemoteLst, local_callback);
+#ifdef DEBUG
+    ALOGD("pal_register_listener return: %d", reply);
+#endif
+    return reply ? NO_ERROR : ERROR_RETURN;
+}
+*/
+    /**
+     * This method removes listener from the service
+     * @return execution status 0 on success or error code
+     * on failure.
+     */
+/*int pal_unregister_listener() {
+    AutoMutex _l(gPalLock);
+
+    if(!isPalInitialized())
+        return ERROR_INIT;
+
+    if (OmadmListener::mRemoteLst == NULL)
+        return ERROR_ARGS;
+
+    int reply = BpOmadmServiceAPI::mBindrToService->removeListener(OmadmListener::mRemoteLst);
+#ifdef DEBUG
+    ALOGD("pal_unregister_listener return: %d", reply);
+#endif
+    return reply ? NO_ERROR : ERROR_RETURN;
+}
+*/    /*
+     * End of user accessible interface
+     ***********************************************************************************/
 
     /*
      * Helpers

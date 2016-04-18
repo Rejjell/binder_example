@@ -95,7 +95,9 @@
   jni/service_api/../include\utils/Thread.h \
   jni/service_api/../include\binder/IServiceManager.h \
   jni/service_api/../include\binder/IPermissionController.h \
-  jni/service_api/../include\utils/Log.h
+  jni/service_api/../include\utils/Log.h \
+  jni/service_api/../include/pal.h \
+  jni/service_api/../include/service_listener.h
 
 jni/service_api/../include\private/android_filesystem_config.h:
 
@@ -288,3 +290,7 @@ jni/service_api/../include\binder/IServiceManager.h:
 jni/service_api/../include\binder/IPermissionController.h:
 
 jni/service_api/../include\utils/Log.h:
+
+jni/service_api/../include/pal.h:
+
+jni/service_api/../include/service_listener.h:

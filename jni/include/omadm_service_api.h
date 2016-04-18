@@ -10,7 +10,8 @@
 #include <utils/Log.h>
 #include <utils/String16.h>
 
-
+#include "pal.h"
+#include "service_listener.h"
 
 using namespace android;
 
@@ -27,7 +28,9 @@ namespace omadm_service_api {
     enum OMADM_API_ENUM{
         GET_DEVICE_ID = IBinder::FIRST_CALL_TRANSACTION,
         SET_WIFI_ENABLED,
-        SEND_NOTIFICATION
+        SEND_NOTIFICATION,
+        ADD_LISTENER,
+        REMOVE_LISTENER
         // Add your serial code here
     };
 
@@ -43,6 +46,10 @@ namespace omadm_service_api {
             virtual String16* getDeviceId() = 0;
             virtual bool setWifiEnabled(bool enable) = 0;
             virtual bool sendNotification(String16* title, String16* message) = 0;
+            // Listners
+            //virtual int addListener(const sp<IOmadmServiceListener>& listener,
+            //       userCallback callback) = 0;
+            //virtual int removeListener(const sp<IOmadmServiceListener>& listener) = 0;
             // Add your methods here
     };
 
@@ -54,6 +61,7 @@ namespace omadm_service_api {
         public:
             static bool mInitialized;
             static sp<IOmadmServiceAPI> mBindrToService;
+            static userCallback mCallback;
 
             BpOmadmServiceAPI(const sp<IBinder>& impl );
 
@@ -61,6 +69,10 @@ namespace omadm_service_api {
             virtual String16* getDeviceId();
             virtual bool setWifiEnabled(bool enable);
             virtual bool sendNotification(String16* title, String16* message);
+            // Listners
+            //virtual int addListener(const sp<IOmadmServiceListener>& listener,
+            //       userCallback callback);
+            //virtual int removeListener(const sp<IOmadmServiceListener>& listener);
             // Add your methods here
     };
 

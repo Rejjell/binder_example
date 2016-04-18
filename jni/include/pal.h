@@ -14,12 +14,23 @@ extern "C" {
 #endif
 
 
+#define UNUSED(...) (void)(__VA_ARGS__)
+
 typedef struct
 {
     unsigned int data_size;
     char *data_buffer;
 } data_buffer_t;
 
+// Declare callback types
+typedef struct
+{
+    int Id;
+    char* message;
+} request_t;
+
+// Declare callback
+typedef void (*userCallback)(request_t);
 
 /**
  * This method gets Device ID (IMEI)
@@ -55,6 +66,23 @@ int pal_device_wifi_enable(int enable);
  * not found.
  */
 int pal_init();
+
+/**
+ * This method adds listener to the service
+ * @param local callback
+ * @return execution status 0 on success or error code
+ * on failure.
+ */
+//int pal_register_listener(userCallback callback);
+
+/**
+ * This method removes listener from the service
+ * @return execution status 0 on success or error code
+ * on failure.
+ */
+//int pal_unregister_listener();
+
+
 
 #ifdef __cplusplus
 }

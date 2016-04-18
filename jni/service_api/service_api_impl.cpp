@@ -22,11 +22,50 @@ namespace omadm_service_api {
 
     BpOmadmServiceAPI::BpOmadmServiceAPI(const sp<IBinder>& impl ):BpInterface<IOmadmServiceAPI>(impl) {}
 
+    /**
+     * Death Notifier implementation. (Callback)
+     * Catch Binder Died notification in cases of system server
+     * crash. This is unlikely event but we will need to
+     * re-initialise PAL in this case.
+     * param@ who is died
+     */
     void DeathNotifier::binderDied(const wp<IBinder>& who) {
+        UNUSED(who);
         ALOGW("Omadm Service: Binder Died");
         BpOmadmServiceAPI::mInitialized = false;
     }
 
+    /**
+     * Omadm Service Listener implementation.
+     * Now it is an example of some "user action" listener
+     * param@ (example) Id of user action
+     * param@ (example) message from user
+     * <p>
+     * @note this method allocates request_data.message buffer
+     * calee is responsible for freeing!
+     */
+    userCallback BpOmadmServiceAPI::mCallback = NULL;
+
+    // Sends notification to PAL about user request
+    void OmadmListener::onRequest(int32_t Id, String16 message) {
+        String8 m = String8(message);
+
+        request_t request_data;
+        unsigned int sz = m.size();
+
+        request_data.message = new char[sz + 1];
+        if(request_data.message == NULL)
+            return;
+        memset(request_data.message, 0, (sz + 1));
+        strncpy(request_data.message, m.string(), sz);
+
+        request_data.Id = Id;
+        if(BpOmadmServiceAPI::mCallback != NULL) {
+            BpOmadmServiceAPI::mCallback(request_data);
+        } else{
+            delete[] request_data.message;
+        }
+    }
 
     /**
      * This method returns device IMEI as String16
@@ -93,6 +132,44 @@ namespace omadm_service_api {
         return (bool)reply.readInt32();
     }
 
+    /**
+     * This method registers listener
+     * @param remote listener object
+     * @param local callback
+     * @return status of execution: true on success
+     */
+    /*int BpOmadmServiceAPI::addListener(const sp<IOmadmServiceListener>& listener,
+            userCallback callback)
+    {
+        mCallback = callback;
+
+        ALOGE("Add OmadmService Listener");
+        Parcel data, reply;
+
+        data.writeInterfaceToken(IOmadmServiceAPI::getInterfaceDescriptor());
+        data.writeStrongBinder(IInterface::asBinder(listener));
+        remote()->transact(ADD_LISTENER, data, &reply);
+        int32_t err = reply.readExceptionCode();
+        return reply.readInt32();
+    }
+*/
+    /**
+     * This method unregisters listener
+     * @param remote listener object
+     * @return status of execution: true on success
+     */
+    /*int BpOmadmServiceAPI::removeListener(const sp<IOmadmServiceListener>& listener)
+        {
+        ALOGE("Remove OmadmService Listener");
+        Parcel data, reply;
+
+        data.writeInterfaceToken(IOmadmServiceAPI::getInterfaceDescriptor());
+        data.writeStrongBinder(IInterface::asBinder(listener));
+        remote()->transact(REMOVE_LISTENER, data, &reply);
+        int32_t err = reply.readExceptionCode();
+        return reply.readInt32();
+    }
+    */
     /*
      * Add your methods here
      */
