@@ -48,7 +48,7 @@ void getNewDataBuffer(data_buffer_t* pDBuffer, unsigned int size) {
 void freeDataBuffer(data_buffer_t* pDBuffer) {
     if((NULL != pDBuffer->data_buffer) && (0 != pDBuffer->data_size)) {
         delete[] pDBuffer->data_buffer;
-        pDBuffer->data_buffer == NULL;
+        pDBuffer->data_buffer = NULL;
         pDBuffer->data_size = 0;
     }
 }

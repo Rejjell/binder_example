@@ -78,6 +78,9 @@
   F:/android-ndk-r10d/platforms/android-21/arch-arm/usr/include\sys/user.h \
   F:/android-ndk-r10d/platforms/android-21/arch-arm/usr/include\sys/sysconf.h \
   F:/android-ndk-r10d/platforms/android-21/arch-arm/usr/include\pathconf.h \
+  F:/android-ndk-r10d/platforms/android-21/arch-arm/usr/include\pthread.h \
+  F:/android-ndk-r10d/platforms/android-21/arch-arm/usr/include\sched.h \
+  F:/android-ndk-r10d/platforms/android-21/arch-arm/usr/include\linux/sched.h \
   jni/pal/../include\cutils/uio.h jni/pal/../include\cutils/logd.h \
   F:/android-ndk-r10d/platforms/android-21/arch-arm/usr/include\android/log.h \
   jni/pal/../include\utils/VectorImpl.h \
@@ -264,6 +267,12 @@ F:/android-ndk-r10d/platforms/android-21/arch-arm/usr/include\sys/user.h:
 F:/android-ndk-r10d/platforms/android-21/arch-arm/usr/include\sys/sysconf.h:
 
 F:/android-ndk-r10d/platforms/android-21/arch-arm/usr/include\pathconf.h:
+
+F:/android-ndk-r10d/platforms/android-21/arch-arm/usr/include\pthread.h:
+
+F:/android-ndk-r10d/platforms/android-21/arch-arm/usr/include\sched.h:
+
+F:/android-ndk-r10d/platforms/android-21/arch-arm/usr/include\linux/sched.h:
 
 jni/pal/../include\cutils/uio.h:
 
